@@ -9,19 +9,25 @@
   </head>
   <body>
     <div id="setup">
-      <input type="text" id="video-url" />
-      <input type="file" id="file-input" />
+      <input type="text" id="video-url" placeholder="Video URL"/>
+      <div id="file-container">
+        <input type="file" id="file-input" />
+      </div>
+      <div id="file-name"></div>
       <div id="start-button">Start</div>
     </div>
     <div id="content">
-      <div id="player"></div>
-      <input type="text" id="string" />
-      <div id="controls">
-        <img id="prev-button" src="./assets/icon-arrow-left.svg" />
-        <img id="reload-button" src="./assets/icon-reload.svg" />
-        <img id="next-button" src="./assets/icon-arrow-right.svg" />
+      <div id="sidebar"></div>
+      <div id="editor">
+        <div id="player"></div>
+        <input type="text" id="string" />
+        <div id="controls">
+          <img id="prev-button" src="./assets/icon-arrow-left.svg" />
+          <img id="reload-button" src="./assets/icon-reload.svg" />
+          <img id="next-button" src="./assets/icon-arrow-right.svg" />
+        </div>
+        <div id="save-button">Save</div>
       </div>
-      <div id="save-button">Save</div>
     </div>
     <script src="../src/index.js"></script>
   </body>

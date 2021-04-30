@@ -1,5 +1,10 @@
+:root {
+  --sidebar-width: 384px;
+}
+
 body {
   background-color: #faf9f7;
+  overflow:hidden;
 }
 
 #setup {
@@ -9,10 +14,6 @@ body {
   justify-content: center;
 
   height: 100vh;
-}
-
-#video-url {
-  font-size: 16px;
 }
 
 #start-button {
@@ -26,20 +27,128 @@ body {
 
 #video-url {
   width: 248px;
+  height: 32px;
+  padding-left: 8px;
+  border-radius: 5px;
+  border: none;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  background-color: #E8E6E1;
+  font-size: 16px;
+  color: #504A40;
+
+  margin-bottom: 12px;
+}
+
+#video-url::placeholder {
+  color: #A39E93;
+}
+
+#file-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 128px;
+  height: 128px;
+
+  margin: 12px 0px 24px 0px;
+
+  background-image: url("./assets/icon-document-add.svg");
+  
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+  background-color: #CFBCF2;
+  border-radius: 10px;
+}
+
+#file-input {
+  width: 100%;
+  height: 128px;
+  opacity: 0;
+}
+
+#file-name {
+  height: 12px;
+  font-family: sans-serif;
+  color: #A081D9;
+  margin-bottom: 12px;
+}
+
+#file-input:hover {
+  cursor: pointer;
 }
 
 #content {
+  overflow: hidden;
   display: none;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+#editor {
+  display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
 
   height: 100vh;
+  margin-left: var(--sidebar-width);
+}
+
+#sidebar {
+  display: flex;
+  flex-direction: column;
+  width: var(--sidebar-width);
+  height: 100vh;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  background-color: #ffff;
+  border-right: 1px solid #a39e93;
+
+  overflow-y: scroll;
+}
+
+.sidebar-snippet {
+  font-family: sans-serif;
+
+  margin: 8px 16px 8px 16px;
+  padding: 16px;
+  border: 2px solid #e8e6e1;
+  border-radius: 5px;
+
+  line-height: 2px;
+
+  white-space: nowrap;
+
+  color: #857F72;
+}
+
+.sidebar-snippet:hover {
+  cursor: pointer;
+}
+
+.selected {
+  border-color: #8662C7;
+  color: #27241D;
 }
 
 #string {
   width: 724px;
+  height: 48px;
   font-size: 24px;
+  padding-left: 24px;
+  padding-right: 24px;
+  border-radius: 5px;
+  border-color: #a39e93;
+  border-style: solid;
+}
+
+#string:focus {
+  outline: none;
 }
 
 #controls {

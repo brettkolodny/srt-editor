@@ -15,6 +15,9 @@ fileInput.addEventListener(
   "change",
   async (event) => {
     const file = event.target.files[0];
+    fileName = file.name;
+
+    document.getElementById("file-name").textContent = fileName;
     const reader = new FileReader();
 
     reader.onload = function (e) {
@@ -25,8 +28,22 @@ fileInput.addEventListener(
 
       const prevButton = document.getElementById("prev-button");
       prevButton.onclick = () => {
+        const currentIndex = captions.currentSnippet.index;
+        const lastSelected = document.getElementById(`snippet-${currentIndex}`);
+
         captions.currentSnippet.string = string.value;
+        lastSelected.textContent = captions.currentSnippet.string;
         captions.prev();
+
+        const newIndex = captions.currentSnippet.index;
+
+        if (currentIndex != newIndex) {
+          const newSelected = document.getElementById(`snippet-${newIndex}`);
+
+          lastSelected.classList.remove("selected");
+          newSelected.classList.add("selected");
+        }
+
         string.value = captions.currentSnippet.string;
         player.seekTo(captions.currentSnippet.start);
       };
@@ -38,8 +55,22 @@ fileInput.addEventListener(
 
       const nextButton = document.getElementById("next-button");
       nextButton.onclick = () => {
+        const currentIndex = captions.currentSnippet.index;
+        const lastSelected = document.getElementById(`snippet-${currentIndex}`);
+
         captions.currentSnippet.string = string.value;
+        lastSelected.textContent = captions.currentSnippet.string;
         captions.next();
+
+        const newIndex = captions.currentSnippet.index;
+
+        if (currentIndex != newIndex) {
+          const newSelected = document.getElementById(`snippet-${newIndex}`);
+
+          lastSelected.classList.remove("selected");
+          newSelected.classList.add("selected");
+        }
+
         string.value = captions.currentSnippet.string;
         player.seekTo(captions.currentSnippet.start);
       };
@@ -55,11 +86,55 @@ fileInput.addEventListener(
 
         const downloadLink = document.createElement("a");
         downloadLink.href = outputFile;
-        downloadLink.download = "output.srt";
+        downloadLink.download = `${fileName.split(".")[0]}_EDIT.srt`;
         downloadLink.textContent = "Download";
 
         saveButton.parentElement.appendChild(downloadLink);
+
+        window.requestAnimationFrame(() => {
+          const clickEvent = new MouseEvent("click");
+          downloadLink.dispatchEvent(clickEvent)
+          downloadLink.remove();
+        })
       };
+
+      const sidebarDiv = document.getElementById("sidebar");
+      let head = captions.currentSnippet;
+
+      let first = true;
+      while (head != null) {
+        const snippetDiv = document.createElement("div");
+        snippetDiv.className = "sidebar-snippet";
+        snippetDiv.id = `snippet-${head.index}`;
+        snippetDiv.textContent = head.string;
+
+        if (first) {
+          snippetDiv.classList.add("selected");
+          first = false;
+        }
+
+        const snippet = head;
+        snippetDiv.onclick = () => {
+          const lastString = string.value;
+          captions.currentSnippet.string = lastString;
+
+          captions.currentSnippet = snippet;
+          string.value = snippet.string;
+          player.seekTo(snippet.start);
+
+          const selectedElements = document.getElementsByClassName("selected");
+          if (selectedElements.length != 0) {
+            const selected = selectedElements[0];
+            selected.classList.remove("selected");
+            selected.textContent = lastString;
+
+            snippetDiv.classList.add("selected");
+          }
+        };
+
+        sidebarDiv.appendChild(snippetDiv);        
+        head = head.next;
+      }
     };
 
     reader.readAsText(file);
@@ -70,11 +145,23 @@ fileInput.addEventListener(
 let startButton = document.getElementById("start-button");
 startButton.onclick = () => {
   let urlInput = document.getElementById("video-url");
-  let url = new URL(urlInput.value);
+  let url;
 
-  if (captions != null && url.searchParams.has("v")) {
+  try {
+    url = new URL(urlInput.value);
+  } catch {
+    url = null;
+  }
+
+  let videoId = null;
+
+  if (url.searchParams.has("v")) {
     videoId = url.searchParams.get("v");
+  } else if (url.hostname == "youtu.be") {
+    videoId = url.pathname.split("/")[1];
+  }
 
+  if (captions != null && videoId != null) {
     player.loadVideoById(videoId);
 
     let contentDiv = document.getElementById("content");
@@ -82,5 +169,7 @@ startButton.onclick = () => {
 
     let setup = document.getElementById("setup");
     setup.style.display = "none";
+  } else {
+    alert("Improper video link or file")
   }
 };
