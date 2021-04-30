@@ -93,9 +93,9 @@ fileInput.addEventListener(
 
         window.requestAnimationFrame(() => {
           const clickEvent = new MouseEvent("click");
-          downloadLink.dispatchEvent(clickEvent)
+          downloadLink.dispatchEvent(clickEvent);
           downloadLink.remove();
-        })
+        });
       };
 
       const sidebarDiv = document.getElementById("sidebar");
@@ -132,7 +132,7 @@ fileInput.addEventListener(
           }
         };
 
-        sidebarDiv.appendChild(snippetDiv);        
+        sidebarDiv.appendChild(snippetDiv);
         head = head.next;
       }
     };
@@ -155,9 +155,9 @@ startButton.onclick = () => {
 
   let videoId = null;
 
-  if (url.searchParams.has("v")) {
+  if (url != null && url.searchParams.has("v")) {
     videoId = url.searchParams.get("v");
-  } else if (url.hostname == "youtu.be") {
+  } else if (url != null && url.hostname == "youtu.be") {
     videoId = url.pathname.split("/")[1];
   }
 
@@ -170,6 +170,6 @@ startButton.onclick = () => {
     let setup = document.getElementById("setup");
     setup.style.display = "none";
   } else {
-    alert("Improper video link or file")
+    alert("Improper video link or file");
   }
 };
