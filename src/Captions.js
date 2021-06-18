@@ -53,7 +53,15 @@ export default class Captions {
       const timeString = srtSplit[lineNum];
       lineNum++;
 
-      const string = srtSplit[lineNum];
+      let string = [];
+      let line = srtSplit[lineNum];
+      while (line != "") {
+        string.push(srtSplit[lineNum]);
+        lineNum += 1;
+        line = srtSplit[lineNum];
+      }
+
+      string = string.join(" ");
       lineNum++;
 
       let newSnippet = new SrtSnippet(index, timeString, string);

@@ -20,6 +20,8 @@ fileInput.addEventListener(
     document.getElementById("file-name").textContent = fileName;
     const reader = new FileReader();
 
+    reader.onerror = (e => console.log(e));
+
     reader.onload = function (e) {
       captions = new Captions(e.target.result);
 
