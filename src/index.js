@@ -89,13 +89,12 @@ fileInput.addEventListener(
         downloadLink.download = `${fileName.split(".")[0]}_EDIT.srt`;
         downloadLink.textContent = "Download";
 
-        saveButton.parentElement.appendChild(downloadLink);
-
-        window.requestAnimationFrame(() => {
-          const clickEvent = new MouseEvent("click");
-          downloadLink.dispatchEvent(clickEvent);
+        downloadLink.onclick = () => {
           downloadLink.remove();
-        });
+        }
+
+        const downloadLinkElem = document.getElementById("download-link");
+        downloadLinkElem.parentElement.appendChild(downloadLink);
       };
 
       const sidebarDiv = document.getElementById("sidebar");
